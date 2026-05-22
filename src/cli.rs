@@ -33,7 +33,9 @@ pub struct Cli {
 
 impl Cli {
     pub fn execute(self) -> Result<()> {
-        let cov = compute_coverage(&self.input)?;
+        let workers = std::num::NonZero::new(self.common.thread_count())
+            .unwrap_or(std::num::NonZero::<usize>::MIN);
+        let cov = compute_coverage(&self.input, workers)?;
 
         let mut out: Box<dyn std::io::Write> = if self.output == "-" {
             Box::new(std::io::stdout().lock())

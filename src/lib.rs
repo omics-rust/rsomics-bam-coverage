@@ -2,6 +2,7 @@
 
 use std::collections::HashMap;
 use std::io::{BufWriter, Write};
+use std::num::NonZero;
 use std::path::Path;
 
 use noodles::sam::alignment::record::cigar::op::Kind;
@@ -23,8 +24,8 @@ pub struct RefCoverage {
     pub coverage_pct: f64,
 }
 
-pub fn compute_coverage(input: &Path) -> Result<Vec<RefCoverage>> {
-    let mut reader = rsomics_bamio::open_parallel(input)?;
+pub fn compute_coverage(input: &Path, workers: NonZero<usize>) -> Result<Vec<RefCoverage>> {
+    let mut reader = rsomics_bamio::open_with_workers(input, workers)?;
     let header = reader.read_header().map_err(RsomicsError::Io)?;
 
     let ref_seqs = header.reference_sequences();
