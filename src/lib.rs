@@ -1,11 +1,9 @@
 #![allow(clippy::cast_precision_loss)]
 
 use std::collections::HashMap;
-use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::Path;
 
-use noodles::bam;
 use noodles::sam::alignment::record::cigar::op::Kind;
 use rsomics_common::{Result, RsomicsError};
 use serde::Serialize;
@@ -26,9 +24,7 @@ pub struct RefCoverage {
 }
 
 pub fn compute_coverage(input: &Path) -> Result<Vec<RefCoverage>> {
-    let file = File::open(input)
-        .map_err(|e| RsomicsError::InvalidInput(format!("{}: {e}", input.display())))?;
-    let mut reader = bam::io::Reader::new(file);
+    let mut reader = rsomics_bamio::open_parallel(input)?;
     let header = reader.read_header().map_err(RsomicsError::Io)?;
 
     let ref_seqs = header.reference_sequences();
