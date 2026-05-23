@@ -144,7 +144,7 @@ pub fn write_coverage(cov: &[RefCoverage], output: &mut dyn Write) -> Result<()>
     for r in cov {
         writeln!(
             out,
-            "{}\t1\t{}\t{}\t{}\t{:.4}\t{:.2}",
+            "{}\t1\t{}\t{}\t{}\t{:.4}\t{:.4}",
             r.name, r.length, r.mapped_reads, r.covered_bases, r.coverage_pct, r.mean_depth
         )
         .map_err(RsomicsError::Io)?;
