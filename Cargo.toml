@@ -12,6 +12,11 @@ description = "Per-reference coverage histogram from BAM — Rust port of samtoo
 name = "rsomics-bam-coverage"
 path = "src/main.rs"
 
+
+[lib]
+name = "rsomics_bam_coverage"
+path = "src/lib.rs"
+doctest = false
 [dependencies]
 rsomics-common = { version = "0.6" }
 rsomics-help = { version = "0.3" }
