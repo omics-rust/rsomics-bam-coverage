@@ -111,11 +111,7 @@ pub fn compute_coverage(input: &Path, workers: NonZero<usize>) -> Result<Vec<Ref
     Ok(result)
 }
 
-/// Total number of distinct reference positions covered by at least one
-/// interval (the union length), via a single sorted sweep of +1/-1 events.
-/// After consuming all deltas at position `p`, `depth` is the coverage of the
-/// half-open span `[p, next_event_pos)`; events balance to zero so `depth`
-/// is 0 once the last event is consumed.
+/// +1/-1 event sweep; events balance to zero after the last covered position.
 fn union_length(events: &mut [(usize, i64)]) -> u64 {
     events.sort_unstable();
     let mut covered: u64 = 0;
